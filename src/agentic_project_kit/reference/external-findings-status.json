@@ -1,10 +1,10 @@
 {
   "authority": "Kit adjudication; VERIFIED_FIXED belongs to the consuming workspace",
   "counts": {
-    "CLOSED": 96,
+    "CLOSED": 97,
     "NOT_APPLICABLE": 0,
     "OPEN": 1,
-    "PARTIAL": 1
+    "PARTIAL": 0
   },
   "execution_classes": {
     "kit_release": 7,
@@ -7588,14 +7588,14 @@
         "remote_effects": [
           "none"
         ],
-        "verification": "Implementation retained behind the package activation constant. Release A remains v1; GF-094 becomes effective only in separately approved release B. Consumer rehearsal and owner acceptance remain required.",
+        "verification": "B activates the single package constant. CLOSED/unreleased is eligible for KIT-GF-091 stamping only when the existing consumer rehearsal and owner acceptance prerequisites pass. Release A retained PARTIAL/unreleased. No release or merge is authorized by this preparation.",
         "workspace_kind": "external_manifest"
       },
       "fixed_in": "unreleased",
       "id": "KIT-GF-094",
-      "kit_state": "PARTIAL",
+      "kit_state": "CLOSED",
       "prs": [],
-      "report": "docs/reports/greenfield/KIT-GF-094-external-handoff-v2-2026-11-01.md"
+      "report": "docs/reports/greenfield/KIT-GF-094-release-b-activation-2026-11-01.md"
     },
     {
       "external_retest": {
@@ -8002,5 +8002,5 @@
   "kind": "external_findings_status",
   "machine_contracts": 57,
   "schema_version": 1,
-  "source_sha256": "8da0c620c16689fe14517b68ae5451d88d52090230f631eef1434a8dc366f9de"
+  "source_sha256": "86017599ecc5ee91d5070c177d19fa1760b7f02a2978ba0fc9235082d152e3c1"
 }

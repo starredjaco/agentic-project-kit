@@ -1989,3 +1989,13 @@ documents:
     owner: maintainers
     status: active
     summary: Sanitized counterprobe and current parser, preview and wheel-contract verification.
+  - path: docs/reports/greenfield/KIT-GF-094-release-b-activation-2026-11-01.md
+    class: evidence/log
+    owner: maintainers
+    status: active
+    summary: Release B activation preparation, all-workspace A adoption hold and complexity balance.
+  - path: docs/reports/greenfield/KIT-GF-094-release-b-activation-2026-11-01.json
+    class: evidence/log
+    owner: maintainers
+    status: active
+    summary: Local B evidence and unchanged pending consumer rehearsal and owner release prerequisites.
