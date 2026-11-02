@@ -3,12 +3,12 @@
   "counts": {
     "CLOSED": 97,
     "NOT_APPLICABLE": 0,
-    "OPEN": 1,
+    "OPEN": 2,
     "PARTIAL": 0
   },
   "execution_classes": {
     "kit_release": 7,
-    "local": 57,
+    "local": 58,
     "owner_remote": 34
   },
   "findings": [
@@ -7864,6 +7864,39 @@
     },
     {
       "external_retest": {
+        "bindings": {},
+        "commands": [
+          "agentic-kit transfer conflict-status --json",
+          "agentic-kit transfer conflict-resolve-file example.txt --source resolved.txt --json"
+        ],
+        "execution_class": "local",
+        "expected": [
+          "Resolve the explicit conflicted file in a valid owned detached-HEAD rebase, without accepting arbitrary detached HEAD or weakening protected-branch/path guards."
+        ],
+        "expected_result_fields": {
+          "assertions": [
+            "resolver.result_status=PASS for valid owned rebase",
+            "conflicted path staged with exact reviewed replacement; unrelated paths unchanged",
+            "invalid detached or protected rebase state remains BLOCKED"
+          ]
+        },
+        "preconditions": [
+          "Isolated owned local Git rebase stopped on a conflicted example.txt; HEAD detached; rebase metadata names the feature branch; resolved.txt contains reviewed replacement bytes."
+        ],
+        "remote_effects": [
+          "none"
+        ],
+        "verification": "OPEN, source-confirmed and isolated negative reproduction: BLOCKED/current_branch_missing, return code 2, conflict bytes unchanged. No fix or machine contract in PR 2723; separate implementation and regression contract required.",
+        "workspace_kind": "external_manifest"
+      },
+      "fixed_in": "",
+      "id": "KIT-GF-100",
+      "kit_state": "OPEN",
+      "prs": [],
+      "report": "docs/reports/greenfield/KIT-GF-100-rebase-detached-head-resolver-2026-11-02.md"
+    },
+    {
+      "external_retest": {
         "bindings": {
           "signature": "Supply the actual signature of the disposable authorized workspace; one argv token."
         },
@@ -8002,5 +8035,5 @@
   "kind": "external_findings_status",
   "machine_contracts": 57,
   "schema_version": 1,
-  "source_sha256": "86017599ecc5ee91d5070c177d19fa1760b7f02a2978ba0fc9235082d152e3c1"
+  "source_sha256": "a4cf4f9650a29e8cb821e8fb30297c64a14754551fac70b72e4ca1dae7dc5f5f"
 }

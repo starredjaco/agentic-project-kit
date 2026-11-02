@@ -7542,6 +7542,35 @@
         },
         "verification": "Local self-built wheel proof; the separate published PyPI 1.1.11 consumer rehearsal and owner acceptance remain pending. No release authority."
       }
+    },
+    {
+      "id": "KIT-GF-100",
+      "kit_state": "OPEN",
+      "fixed_in": "",
+      "prs": [],
+      "report": "docs/reports/greenfield/KIT-GF-100-rebase-detached-head-resolver-2026-11-02.md",
+      "external_retest": {
+        "workspace_kind": "external_manifest",
+        "preconditions": [
+          "Isolated owned local Git rebase stopped on a conflicted example.txt; HEAD detached; rebase metadata names the feature branch; resolved.txt contains reviewed replacement bytes."
+        ],
+        "commands": [
+          "agentic-kit transfer conflict-status --json",
+          "agentic-kit transfer conflict-resolve-file example.txt --source resolved.txt --json"
+        ],
+        "bindings": {},
+        "expected": [
+          "Resolve the explicit conflicted file in a valid owned detached-HEAD rebase, without accepting arbitrary detached HEAD or weakening protected-branch/path guards."
+        ],
+        "expected_result_fields": {
+          "assertions": [
+            "resolver.result_status=PASS for valid owned rebase",
+            "conflicted path staged with exact reviewed replacement; unrelated paths unchanged",
+            "invalid detached or protected rebase state remains BLOCKED"
+          ]
+        },
+        "verification": "OPEN, source-confirmed and isolated negative reproduction: BLOCKED/current_branch_missing, return code 2, conflict bytes unchanged. No fix or machine contract in PR 2723; separate implementation and regression contract required."
+      }
     }
   ],
   "kind": "external_findings_catalog",

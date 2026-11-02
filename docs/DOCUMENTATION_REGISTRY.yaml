@@ -1999,3 +1999,13 @@ documents:
     owner: maintainers
     status: active
     summary: Local B evidence and unchanged pending consumer rehearsal and owner release prerequisites.
+  - path: docs/reports/greenfield/KIT-GF-100-rebase-detached-head-resolver-2026-11-02.md
+    class: evidence/log
+    owner: maintainers
+    status: active
+    summary: Open detached-HEAD resolver finding and exact B rebase continuation, range-diff and preservation report.
+  - path: docs/reports/greenfield/KIT-GF-100-rebase-detached-head-resolver-2026-11-02.json
+    class: evidence/log
+    owner: maintainers
+    status: active
+    summary: Actual isolated negative resolver reproduction; BLOCKED and unchanged conflicted bytes.

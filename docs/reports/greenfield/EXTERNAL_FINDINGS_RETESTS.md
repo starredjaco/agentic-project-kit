@@ -1695,6 +1695,24 @@ Expected: Target preview preserves repository_name and execution_contract for le
 
 Expected result fields: `{"assertions": ["repository_name and execution_contract.repo.full_name equal example/transition-fixture, never the workspace project name; old-parser counterprobe must fail with projection_inputs_changed."]}`.
 
+## KIT-GF-100
+
+Kit state: OPEN; fixed_in: not established.
+Evidence: docs/reports/greenfield/KIT-GF-100-rebase-detached-head-resolver-2026-11-02.md
+
+Execution class: local (effects: none); no machine contract; `greenfield retest` reports NO_MACHINE_CONTRACT.
+
+Preconditions: Isolated owned local Git rebase stopped on a conflicted example.txt; HEAD detached; rebase metadata names the feature branch; resolved.txt contains reviewed replacement bytes.
+
+```text
+agentic-kit transfer conflict-status --json
+agentic-kit transfer conflict-resolve-file example.txt --source resolved.txt --json
+```
+
+Expected: Resolve the explicit conflicted file in a valid owned detached-HEAD rebase, without accepting arbitrary detached HEAD or weakening protected-branch/path guards.
+
+Expected result fields: `{"assertions": ["resolver.result_status=PASS for valid owned rebase", "conflicted path staged with exact reviewed replacement; unrelated paths unchanged", "invalid detached or protected rebase state remains BLOCKED"]}`.
+
 ## KIT-GF-RULE-REGISTRY-BOOTSTRAP
 
 Kit state: CLOSED; fixed_in: 1.0.25.
