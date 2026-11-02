@@ -30,7 +30,13 @@ no remote. No real workspace was downgraded or repaired by bypassing a gate.
 A separate fix must validate the active rebase's owned branch and target before
 accepting detached HEAD, preserve protected-branch/path guards, and add positive
 and negative regression tests. That implementation is deliberately out of #2723.
-No machine contract is claimed for 100 in this change.
+The existing new-local-finding rule requires a machine contract. An added
+negative-reproduction contract uses only the existing git_repository fixture
+and runner; its 19 steps verify the BLOCKED result, detached HEAD, byte-identical
+before/after conflict diff and still-unmerged index. Its PASS means only that
+the OPEN failure is reproduced safely, never that resolution works or 100 is
+fixed. The separate fix must replace/extend this with successful resolution and
+invalid-state regressions; neither the resolver nor the runner is changed here.
 
 ## Exact B rebase continuation
 
@@ -341,3 +347,12 @@ Final evidence/catalog checks are recorded in the B activation report and PR.
 The independent consumer must repeat published PyPI 1.1.11 -> rebased B without
 a probe patch. All-known-workspace A adoption and owner acceptance remain pending.
 The PR remains a draft, with no merge, release, version bump or auto-merge.
+
+## Katalogpflicht und gezielte Gegenprobe
+
+The initial catalogue addition without a machine contract failed the unchanged
+new-local-finding gate: 4525 tests passed, one failed
+(test_only_the_named_local_retests_lack_a_contract). No exemption or test change
+was made. The existing-runner negative reproduction then passed all 19 steps.
+The finding remains OPEN with no assigned fixed release; successful resolution
+is not claimed. The full final suite result is recorded in the PR report.

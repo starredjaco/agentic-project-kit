@@ -7871,13 +7871,234 @@
         ],
         "execution_class": "local",
         "expected": [
-          "Resolve the explicit conflicted file in a valid owned detached-HEAD rebase, without accepting arbitrary detached HEAD or weakening protected-branch/path guards."
+          "For this OPEN finding, reproduce BLOCKED/current_branch_missing in a valid owned detached rebase; preserve the conflicted file and unmerged index. A passing negative reproduction does not claim successful resolution or a fix."
         ],
         "expected_result_fields": {
           "assertions": [
-            "resolver.result_status=PASS for valid owned rebase",
-            "conflicted path staged with exact reviewed replacement; unrelated paths unchanged",
-            "invalid detached or protected rebase state remains BLOCKED"
+            "resolver.result_status=BLOCKED",
+            "resolver.blockers=[current_branch_missing]",
+            "rebase HEAD is detached and example.txt stays unmerged",
+            "before/after conflict diff bytes are identical; finding stays OPEN"
+          ]
+        },
+        "machine": {
+          "covers": "Negative reproduction only: a real owned local rebase detaches HEAD; resolver reports BLOCKED/current_branch_missing and leaves conflict bytes/index unchanged. OPEN finding, not a resolver fix or proof of successful resolution.",
+          "fixture": "git_repository",
+          "steps": [
+            {
+              "write": {
+                "path": "example.txt",
+                "text": "base\n"
+              }
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "add",
+                "example.txt"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "commit",
+                "-m",
+                "Seed"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "switch",
+                "-c",
+                "codex/rebase-probe"
+              ]
+            },
+            {
+              "write": {
+                "path": "example.txt",
+                "text": "feature\n"
+              }
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "commit",
+                "-am",
+                "Feature"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "switch",
+                "main"
+              ]
+            },
+            {
+              "write": {
+                "path": "example.txt",
+                "text": "main\n"
+              }
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "commit",
+                "-am",
+                "Main"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "switch",
+                "codex/rebase-probe"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 1,
+                "stdout_contains": "CONFLICT"
+              },
+              "run": [
+                "git",
+                "rebase",
+                "main"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0,
+                "stdout_equals": ""
+              },
+              "run": [
+                "git",
+                "branch",
+                "--show-current"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "diff",
+                "--binary",
+                "--output",
+                "before.patch",
+                "--",
+                "example.txt"
+              ]
+            },
+            {
+              "write": {
+                "path": "resolved.txt",
+                "text": "resolved\n"
+              }
+            },
+            {
+              "expect": {
+                "json": {
+                  "repo.branch": "",
+                  "repo.unmerged_files": [
+                    "example.txt"
+                  ]
+                },
+                "returncode": 2
+              },
+              "run": [
+                "agentic-kit",
+                "transfer",
+                "conflict-status",
+                "--json"
+              ]
+            },
+            {
+              "expect": {
+                "json": {
+                  "blockers": [
+                    "current_branch_missing"
+                  ],
+                  "branch": "",
+                  "result_status": "BLOCKED",
+                  "unmerged_files": [
+                    "example.txt"
+                  ]
+                },
+                "returncode": 2
+              },
+              "run": [
+                "agentic-kit",
+                "transfer",
+                "conflict-resolve-file",
+                "example.txt",
+                "--source",
+                "resolved.txt",
+                "--json"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "diff",
+                "--binary",
+                "--output",
+                "after.patch",
+                "--",
+                "example.txt"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0
+              },
+              "run": [
+                "git",
+                "diff",
+                "--no-index",
+                "--",
+                "before.patch",
+                "after.patch"
+              ]
+            },
+            {
+              "expect": {
+                "returncode": 0,
+                "stdout_equals": "example.txt"
+              },
+              "run": [
+                "git",
+                "diff",
+                "--name-only",
+                "--diff-filter=U"
+              ]
+            }
           ]
         },
         "preconditions": [
@@ -7886,7 +8107,7 @@
         "remote_effects": [
           "none"
         ],
-        "verification": "OPEN, source-confirmed and isolated negative reproduction: BLOCKED/current_branch_missing, return code 2, conflict bytes unchanged. No fix or machine contract in PR 2723; separate implementation and regression contract required.",
+        "verification": "OPEN with a negative-reproduction machine contract only: real isolated Git rebase, BLOCKED/current_branch_missing, return code 2, conflicted bytes/index unchanged. No resolver fix in PR 2723. Successful owned-rebase resolution and rejection of invalid detached/protected states require a separate fix and expanded positive/negative contract.",
         "workspace_kind": "external_manifest"
       },
       "fixed_in": "",
@@ -8033,7 +8254,7 @@
     }
   ],
   "kind": "external_findings_status",
-  "machine_contracts": 57,
+  "machine_contracts": 58,
   "schema_version": 1,
-  "source_sha256": "a4cf4f9650a29e8cb821e8fb30297c64a14754551fac70b72e4ca1dae7dc5f5f"
+  "source_sha256": "3de2d23f51b1971dabfb89c1e6e1540210698f917f2c9b5d5d780233d99fd70c"
 }
