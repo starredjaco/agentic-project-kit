@@ -117,27 +117,29 @@ https://github.com/vfi64/agentic-project-kit/compare/daa149180937f03982187824b54
 
 ### Full range-diff
 
+Trailing whitespace is normalized for checked-in Markdown; the exact final-head raw output is retained in the PR report.
+
 ```text
 1:  7c009ee5 ! 1:  810b8517 Prepare external projection v2 activation for release B while preserving A evidence
     @@ CHANGELOG.md
      @@
       ## Unreleased
-      
+
     -+- Changed: Enable external handoff projection v2 for release B (KIT-GF-094). First adopt release A **1.1.11**, then B. This activation remains on the PR branch until the owner confirms that all known external workspaces have adopted A; no merge or release is authorized yet.
     + - Fixed: Preserve the repository identity in target handoff previews by decoding Git-quoted origin values in the target and writing Git syntax in future planners. Legacy 1.1.11 payloads remain compatible; real-wheel regressions now use a GitHub-shaped origin distinct from the project name (KIT-GF-099). No release or v2 activation is performed by this fix.
     ++- Changed: Enable external handoff projection v2 for release B (KIT-GF-094). First adopt release A **1.1.11**, then B. All known external workspaces must adopt A before B is released.
      +- Changed: External content merges with current captured inputs require no refresh-only PR. Chat switches keep versioned handoff projections byte-identical; volatile identity remains in the ignored runtime file, producing no tracked handoff diff. Self-hosting retains its existing lifecycle.
      +- Fixed: The release-check advisory covers installations below 1.1.11. A direct jump from **1.1.10 or older** to B requires the documented migration route followed by another `kit update`; missing original adoption evidence leaves no governed installation return. KIT-GF-096 must remove external v1 compatibility no later than the second release after B.
     -+
-    + 
+    +
       ## v1.1.11 - 2026-11-01
-      
+
     - - Fixed: Stage external projection v2 across two releases: A retains v1 behavior while shipping the future migration planner; only a separately approved B activates the package-owned switch (KIT-GF-097).
-     
+
       ## docs/DOCUMENTATION_COVERAGE.yaml ##
      @@ docs/DOCUMENTATION_COVERAGE.yaml: rules:
     @@ docs/DOCUMENTATION_COVERAGE.yaml: rules:
-     
+
       ## docs/DOCUMENTATION_REGISTRY.yaml ##
      @@ docs/DOCUMENTATION_REGISTRY.yaml: documents:
     -   - path: docs/reports/release/release-run-1.1.11.json
@@ -157,18 +159,18 @@ https://github.com/vfi64/agentic-project-kit/compare/daa149180937f03982187824b54
     +-| docs/reports/ | 245 | 79 | 166 |  |
     ++| docs/reports/ | 246 | 80 | 166 |  |
       | docs/workflow/ | 12 | 12 | 0 |  |
-      
+
       Notes:
     @@ docs/planning/PROJECT_DIRECTION.yaml: meta:
                   decision: F1
-     
+
       ## docs/reference/EXTERNAL_HANDOFF_V2.md ##
     -@@
     - # External successor handoff v2
     +@@ docs/reference/EXTERNAL_HANDOFF_V2.md: strings. A GitHub-shaped fixture origin is transported only to a disposable
     + local bare repository through Git insteadOf rewriting. This parsing fix does
     + not change the projection activation policy.
-      
+
     -+## Release B preparation and merge hold
     ++## Release B activation
      +
@@ -203,26 +205,26 @@ https://github.com/vfi64/agentic-project-kit/compare/daa149180937f03982187824b54
     ++after B.
      +
       ## Two-release adoption (KIT-GF-097)
-      
+
     @@ docs/reference/EXTERNAL_HANDOFF_V2.md
       `external_projection_policy.py`. It ships the future target preview, adoption
       receipt, runtime-consumer and return capabilities while external generation and
       checks retain v1. It adds no `projection_contract_min` and does not report
     + `NEEDS_PROJECTION_MIGRATION` through its external workflows. Module presence is
     + never activation. There is no environment or workspace activation option.
-    + 
+    +
     +-Known external workspaces first adopt A. A later, separately approved release B
     +-changes that one constant to True. The installed A planner previews B, signs the
     ++Known external workspaces first adopt A (1.1.11). Release B changes that one
     ++constant to True. The installed A planner previews B, signs the
     + projection, manifest minimum and ignore-file changes, and writes adoption
     + evidence after successful execution. A-to-A-prime remains a v1 update.
-    + 
+    +
      @@ docs/reference/EXTERNAL_HANDOFF_V2.md: starts with B. B1 adoption additionally waits for recorded cycle 008.
-      
+
       ### Direct legacy-to-B completion and B release notes
     @@ docs/reference/EXTERNAL_HANDOFF_V2.md: starts with B. B1 adoption additionally w
-      
+
       If an old planner installs B before detecting missing migration, preserve its
       BLOCKED result and completed steps. Use the existing
     +@@ docs/reference/EXTERNAL_HANDOFF_V2.md: The local A/B/A-prime matrix uses real noneditable wheels, loopback package
@@ -231,10 +233,10 @@ https://github.com/vfi64/agentic-project-kit/compare/daa149180937f03982187824b54
     + installation and completion remain real. Independent consumer rehearsal and
     +-owner acceptance remain release gates; no release is authorized here.
     ++owner acceptance remain release gates.
-    + 
+    +
     + When release B is active, KIT-GF-094 replaces commit freshness with deterministic content freshness only
     + for external workspaces. Self-hosting retains its v1 contract, C4 administrative
-     
+
       ## docs/reports/greenfield/EXTERNAL_FINDINGS_RETESTS.md ##
      @@ docs/reports/greenfield/EXTERNAL_FINDINGS_RETESTS.md: Expected result fields: `{"assertions": ["release_check.installed equals the run
     @@ docs/reports/greenfield/external-findings-status.json
@@ -260,7 +262,7 @@ https://github.com/vfi64/agentic-project-kit/compare/daa149180937f03982187824b54
     +-  "source_sha256": "8da0c620c16689fe14517b68ae5451d88d52090230f631eef1434a8dc366f9de"
     ++  "source_sha256": "86017599ecc5ee91d5070c177d19fa1760b7f02a2978ba0fc9235082d152e3c1"
       }
-     
+
       ## src/agentic_project_kit/external_projection_policy.py ##
     @@ src/agentic_project_kit/reference/external-findings-status.json
       {
@@ -285,7 +287,7 @@ https://github.com/vfi64/agentic-project-kit/compare/daa149180937f03982187824b54
     +-  "source_sha256": "8da0c620c16689fe14517b68ae5451d88d52090230f631eef1434a8dc366f9de"
     ++  "source_sha256": "86017599ecc5ee91d5070c177d19fa1760b7f02a2978ba0fc9235082d152e3c1"
       }
-     
+
       ## tests/test_external_projection_activation.py ##
 2:  54c50745 = 2:  861bf621 Make B retest fixtures idempotent and isolate returned owned runtimes
 3:  6569fba5 = 3:  acd77b9b Record B activation verification and preserve future release-stamp compatibility
